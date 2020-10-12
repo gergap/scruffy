@@ -171,6 +171,7 @@ def yuml2dot(spec, options):
     dot.append('digraph G {')
     dot.append('    ranksep = 1')
     dot.append('    rankdir = %s' % (options.rankdir))
+    dot.append('    bgcolor=transparent')
 
     for expr in exprs:
         for elem in expr:
@@ -253,20 +254,22 @@ def yuml2dot(spec, options):
     return '\n'.join(dot) + '\n'
 
 def transform(expr, fout, options):
+    from io import BytesIO ## for Python 3
     dot = yuml2dot(expr, options)
 
     if options.png or options.svg:
         import subprocess
 
+        dot = dot.encode('utf-8')
         if options.scruffy:
-            import StringIO
             from . import scruffy
 
             svg = subprocess.Popen(['dot', '-Tsvg'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(input=dot)[0]
-            scruffy.transform(StringIO.StringIO(svg), fout, options)
+            scruffy.transform(BytesIO(svg), fout, options)
         elif options.png:
             subprocess.Popen(['dot', '-Tpng'], stdin=subprocess.PIPE, stdout=fout).communicate(input=dot)
         elif options.svg:
             subprocess.Popen(['dot', '-Tsvg'], stdin=subprocess.PIPE, stdout=fout).communicate(input=dot)
     else:
         fout.write(dot)
+

@@ -95,7 +95,7 @@ def transformLine2Polyline(elem):
 def transformPolyline(elem):
     points = parsePoints(elem.attrib['points'])
     newPoints = []
-    for i in xrange(len(points) - 1):
+    for i in range(len(points) - 1):
         p1, p2 = points[i], points[i + 1]
 
         newPoints.append(p1)
@@ -209,14 +209,15 @@ def transform(fin, fout, options):
 
     _transform(root, options)
 
-    scruffySvg = etree.tostring(root) + '\n'
+    scruffySvg = etree.tostring(root) + '\n'.encode('utf-8')
+
+    from io import StringIO ## for Python 3
 
     if options.png:
         import subprocess
-        png = subprocess.Popen(['rsvg-convert', '-f', 'png'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(input=scruffySvg)[0]
-        fout.write(png)
+        subprocess.Popen(['rsvg-convert', '-f', 'png'], stdin=subprocess.PIPE, stdout=fout).communicate(input=scruffySvg)[0]
     else:
-        fout.write(scruffySvg)
+        fout.write(scruffySvg.decode('utf-8'))
 
 def main():
     import optparse

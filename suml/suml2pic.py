@@ -67,6 +67,8 @@ def suml2pic(spec, options):
 
     messages = []
     for expr in exprs:
+#        print(expr)
+#        print("len="+str(len(expr)))
         assert len(expr) in (1, 3)
         if len(expr) == 1:
             assert expr[0][0] == 'record'
@@ -127,21 +129,24 @@ def transform(expr, fout, options):
 
     if options.png or options.svg:
         import subprocess
-        import StringIO
+        from io import BytesIO
 
         if options.scruffy:
             from . import scruffy
 
+            pic = pic.encode('utf-8')
             svg = subprocess.Popen(['pic2plot', '-Tsvg'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(input=pic)[0]
             if options.png:
-                tocrop = StringIO.StringIO()
-                scruffy.transform(StringIO.StringIO(svg), tocrop, options)
-                common.crop(StringIO.StringIO(tocrop.getvalue()), fout)
+                tocrop = BytesIO()
+                scruffy.transform(BytesIO(svg), fout, options)
+#                png = subprocess.Popen(['convert', 'logo:', '-trim'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(input=pic)[0]
+#                scruffy.transform(BytesIO(svg), tocrop, options)
+#                common.crop(tocrop.getvalue(), fout)
             else:
-                scruffy.transform(StringIO.StringIO(svg), fout, options)
+                scruffy.transform(BytesIO(svg), fout, options)
         elif options.png:
             png = subprocess.Popen(['pic2plot', '-Tpng'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(input=pic)[0]
-            common.crop(StringIO.StringIO(png), fout)
+            common.crop(BytesIO(png), fout)
         elif options.svg:
             subprocess.Popen(['pic2plot', '-Tsvg'], stdin=subprocess.PIPE, stdout=fout).communicate(input=pic)
     else:

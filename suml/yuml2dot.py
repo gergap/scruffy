@@ -183,7 +183,7 @@ def yuml2dot(spec, options):
 
                 dot.append('    subgraph %s {' % (uid))
                 dot.append('        label = "%s"' % (label))
-                dot.append('        fontsize = 13')
+                dot.append('        fontsize = 12')
 
                 if options.font:
                     dot.append('        fontname = "%s"' % (options.font))
@@ -200,7 +200,7 @@ def yuml2dot(spec, options):
                 dot.append('        shape = "%s"' % (elem[0]))
                 dot.append('        height = 0.50')
                 #dot.append('        margin = 0.11,0.055')
-                dot.append('        fontsize = 13')
+                dot.append('        fontsize = 12')
                 if options.font:
                     dot.append('        fontname = "%s"' % (options.font))
                 dot.append('        margin = "0.20,0.05"')

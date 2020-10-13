@@ -86,7 +86,7 @@ def yumlExpr(spec):
         # [note: something like this {bg:color}]
         elif part[0] == '[' and part[-1] == ']':
             part = part[1:-1]
-            bg = ''
+            bg = 'lightgray'
             if part[-1] == '}':
                 x = part.split('{bg:')
                 assert len(x) == 2
@@ -183,7 +183,7 @@ def yuml2dot(spec, options):
 
                 dot.append('    subgraph %s {' % (uid))
                 dot.append('        label = "%s"' % (label))
-                dot.append('        fontsize = 10')
+                dot.append('        fontsize = 13')
 
                 if options.font:
                     dot.append('        fontname = "%s"' % (options.font))
@@ -200,7 +200,7 @@ def yuml2dot(spec, options):
                 dot.append('        shape = "%s"' % (elem[0]))
                 dot.append('        height = 0.50')
                 #dot.append('        margin = 0.11,0.055')
-                dot.append('        fontsize = 10')
+                dot.append('        fontsize = 13')
                 if options.font:
                     dot.append('        fontname = "%s"' % (options.font))
                 dot.append('        margin = "0.20,0.05"')

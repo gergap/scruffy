@@ -121,6 +121,7 @@ def transformPolygon(elem):
 
 def transformText(elem, font):
     elem.attrib['font-family'] = font
+#    elem.attrib['font-weight'] = 'bold'
 
 def transformAddShade(root, elem):
     if elem.get('fill', '') == 'white' and elem.get('stroke', '') == 'white':
@@ -215,7 +216,7 @@ def transform(fin, fout, options):
 
     if options.png:
         import subprocess
-        subprocess.Popen(['rsvg-convert', '-f', 'png', '-d', '180', '-p', '180'], stdin=subprocess.PIPE, stdout=fout).communicate(input=scruffySvg)[0]
+        subprocess.Popen(['rsvg-convert', '-f', 'png', '-d', '100', '-p', '100'], stdin=subprocess.PIPE, stdout=fout).communicate(input=scruffySvg)[0]
     else:
         fout.write(scruffySvg.decode('utf-8'))
 
